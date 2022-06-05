@@ -9,7 +9,7 @@ function Welcome({navigation}) {
   const useCtx = React.useContext(ProductsContext);
 
   React.useEffect(() => {
-    AsyncStorage.getItem('storage', (err, item) => {
+    AsyncStorage.getItem('storage3', (err, item) => {
       if (err) {
         console.log(err);
       } else {
@@ -18,6 +18,9 @@ function Welcome({navigation}) {
         // }
         console.log(typeof item);
         console.log(item);
+        // if (item == null) {
+        //   return;
+        // }
         var strObj = item;
 
         var jsonStr = strObj.replace(/(\w+:)|(\w+ :)/g, function (s) {

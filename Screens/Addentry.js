@@ -10,6 +10,7 @@ import {
   Pressable,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// this is used for storing data locally..
 import {ProductsContext} from './Store/ProductsContext';
 const Entryscreen = ({navigation}) => {
   const useCtx = React.useContext(ProductsContext);
@@ -65,8 +66,9 @@ const Entryscreen = ({navigation}) => {
 
     useCtx.updateid(id);
     var obj = {[id]: {id: id, date: today, text: entered}};
-    AsyncStorage.mergeItem('storage', JSON.stringify(obj));
-    useCtx.setproducts2({id: {id: id, date: today, text: entered}});
+    AsyncStorage.mergeItem('storage3', JSON.stringify(obj));
+
+    // useCtx.setproducts2({[id]: {id: id, date: today, text: entered}});
     useCtx.setproducts2({id: id, date: today, text: entered});
     setenteredtext('');
   }
