@@ -31,6 +31,30 @@ const Entryscreen = ({navigation}) => {
   }
 
   function addGoalHandler(entered) {
+    let KEY1 = 'test_merge';
+    let KEY2 = 'test_assign'; // I'll use this in the next example
+    let ORIG = {
+      product1: {
+        name: 'kuldeep',
+      },
+    };
+
+    let DELTA = {
+      product2: {
+        title: 'ranjan',
+      },
+    };
+    AsyncStorage.setItem(KEY1, JSON.stringify(ORIG), () => {
+      AsyncStorage.mergeItem(KEY1, JSON.stringify(DELTA), () => {
+        AsyncStorage.getItem(KEY1, (err, result) => {
+          let data = JSON.parse(result);
+          console.log(typeof data);
+          console.log('KEY1 result of merged object: %O', data.product2);
+        });
+      });
+    });
+    console.log(ORIG);
+
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -38,13 +62,12 @@ const Entryscreen = ({navigation}) => {
 
     today = mm + '/' + dd + '/' + yyyy;
     let id = makeid(3);
-    useCtx.updateid(id);
-    AsyncStorage.setItem(
-      id,
-      JSON.stringify({id: id, date: today, text: entered}),
-    );
 
-    useCtx.setproducts({id: id, date: today, text: entered});
+    useCtx.updateid(id);
+    var obj = {[id]: {id: id, date: today, text: entered}};
+    AsyncStorage.mergeItem('storage', JSON.stringify(obj));
+    useCtx.setproducts2({id: {id: id, date: today, text: entered}});
+    useCtx.setproducts2({id: id, date: today, text: entered});
     setenteredtext('');
   }
   AsyncStorage.setItem('intial', JSON.stringify({id: 6, date: 8, text: 'hj'}));

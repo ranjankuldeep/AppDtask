@@ -9,17 +9,32 @@ function Welcome({navigation}) {
   const useCtx = React.useContext(ProductsContext);
 
   React.useEffect(() => {
-    AsyncStorage.multiGet(useCtx.id, (err, item) => {
+    AsyncStorage.getItem('storage', (err, item) => {
       if (err) {
         console.log(err);
       } else {
-        for (let x of item) {
-          console.log(x[1]);
-        }
+        // for (let x of item) {
+        //   console.log(x);
+        // }
+        console.log(typeof item);
+        console.log(item);
+        var strObj = item;
+
+        var jsonStr = strObj.replace(/(\w+:)|(\w+ :)/g, function (s) {
+          return '"' + s.substring(0, s.length - 1) + '":';
+        });
+
+        var obj = JSON.parse(jsonStr);
+        console.log(obj);
+        Object.keys(obj).forEach(key => {
+          console.log(obj[key]);
+          useCtx.setproducts2(obj[key]);
+        });
       }
     });
   }, []);
 
+  console.log(useCtx.products2);
   function PressHandler() {
     navigation.navigate('EntryScreen');
   }
@@ -38,7 +53,7 @@ function Welcome({navigation}) {
     <>
       <View style={{display: 'flex', flexDirection: 'column', flex: 1}}>
         <FlatList
-          data={useCtx.products}
+          data={useCtx.products2}
           keyExtractor={item => item.id}
           renderItem={renderDiaryItem}
         />
